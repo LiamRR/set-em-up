@@ -1,7 +1,7 @@
 ---
 - name: Update apt cache
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
   when: ansible_os_family == "Debian"
 
 - name: Install APT packages
@@ -11,7 +11,7 @@
   when: ansible_os_family == "Debian"
 
 - name: Install Snap packages
-  ansible.builtin.snap:
+  community.general.snap:
     name: "{{ item }}"
     state: present
   loop: "{{ snap_packages }}"
@@ -29,7 +29,7 @@
   ansible.builtin.apt_repository:
     repo: ppa:deadsnakes/ppa
     state: present
-    update_cache: yes
+    update_cache: true
   when: ansible_os_family == "Debian"
 
 - name: Install Python 3.12 and related packages
@@ -49,5 +49,5 @@
       - python3-full
       - pipx
     state: present
-    update_cache: yes
+    update_cache: true
   when: ansible_os_family == "Debian"
