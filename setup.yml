@@ -1,0 +1,25 @@
+- name: Configure Linux laptops
+  hosts: linux
+  gather_facts: true
+  become: true
+  roles:
+    - linux/base
+    - linux/dev-tools
+  tags:
+    - linux
+
+# - name: Configure Windoze laptops
+#   hosts: windows
+#   gather_facts: true
+#   become: true
+#   tasks:
+#     - name: Include Windoze setup roles
+#       include_role:
+#         name: "windows/{{ item }}"
+#       loop:
+#         - base
+#         - dev-tools
+#         - productivity
+#         - security
+#       tags:
+#         - windows

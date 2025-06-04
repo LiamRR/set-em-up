@@ -1,0 +1,48 @@
+apt_packages:
+  - git
+  - curl
+  - wget
+  - build-essential
+  - gnupg
+  - software-properties-common
+  - apt-transport-https
+  - ca-certificates
+  - vim
+  - htop
+  - tree
+  - unzip
+  - zip
+
+snap_packages:
+  - code
+  - firefox
+
+rhel_packages:
+  - git
+  - curl
+  - wget
+  - gcc
+  - gcc-c++
+  - make
+  - gnupg2
+  - vim
+  - htop
+  - tree
+  - unzip
+  - zip
+
+custom_repos:
+  hashicorp:
+    name: "HashiCorp"
+    key_url: "https://apt.releases.hashicorp.com/gpg"
+    repo_url: "deb [arch=amd64] https://apt.releases.hashicorp.com"
+    packages:
+      - terraform
+      - vault
+      - consul
+
+direct_downloads:
+  aws_cli:
+    url: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+    install_command: "/tmp/aws/install --update"
+    creates: "/usr/local/bin/aws"
