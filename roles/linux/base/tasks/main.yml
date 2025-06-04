@@ -1,24 +1,24 @@
 ---
 - name: Update apt cache
-  apt:
+  ansible.builtin.apt:
     update_cache: yes
   when: ansible_os_family == "Debian"
 
 - name: Install APT packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ apt_packages }}"
     state: present
   when: ansible_os_family == "Debian"
 
 - name: Install Snap packages
-  snap:
+  ansible.builtin.snap:
     name: "{{ item }}"
     state: present
   loop: "{{ snap_packages }}"
   when: ansible_os_family == "Debian"
 
 - name: Install DNF packages (Fedora/RHEL)
-  dnf:
+  ansible.builtin.dnf:
     name: "{{ item }}"
     state: present
   loop: "{{ apt_packages }}"
@@ -26,14 +26,14 @@
 
 # Install Pyton
 - name: Add deadsnakes PPA for Python 3.12
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: ppa:deadsnakes/ppa
     state: present
     update_cache: yes
   when: ansible_os_family == "Debian"
 
 - name: Install Python 3.12 and related packages
-  apt:
+  ansible.builtin.apt:
     name:
       - python3.12
       - python3.12-dev
@@ -42,7 +42,7 @@
   when: ansible_os_family == "Debian"
 
 - name: Install Python development tools
-  apt:
+  ansible.builtin.apt:
     name: 
       - python3-pip
       - python3-venv

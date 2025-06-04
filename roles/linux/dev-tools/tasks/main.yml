@@ -1,5 +1,5 @@
 - name: Install basic development tools.
-  apt:
+  ansible.builtin.apt:
     name:
       - git
       - curl
@@ -14,7 +14,7 @@
   when: ansible_os_family == "Debian"
 
 - name: Install basic development tools.
-  dnf:
+  ansible.builtin.dnf:
     name:
       - git
       - curl
@@ -28,90 +28,89 @@
 # Terraform installation
 - name: Terraform task block (Debian).
   when: ansible_os_family == "Debian"
-  block:
+  ansible.builtin.block:
     - name: Add HashiCorp GPG key.
-      apt_key:
+      ansible.builtin.apt_key:
         url: https://apt.releases.hashicorp.com/gpg
         state: present
 
     - name: Add HashiCorp repository.
-      apt_repository:
+      aansible.builtin.apt_repository:
         repo: "deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
         state: present
 
     - name: Install Terraform.
-      apt:
+      ansible.builtin.apt:
         name: terraform
         state: present
-        update_cache: yes
+        update_cache: true
 
 - name: Terraform task block (Redhat).
   when: ansible_os_family == "RedHat"
-  block:
+  ansible.builtin.block:
     - name: Add HashiCorp repository.
-      yum_repository:
+      ansible.builtin.yum_repository:
         name: hashicorp
         description: HashiCorp Stable - $basearch
         baseurl: https://rpm.releases.hashicorp.com/RHEL/$releasever/$basearch/stable
         gpgkey: https://rpm.releases.hashicorp.com/gpg
-        gpgcheck: yes
-        enabled: yes
+        gpgcheck: true
+        enabled: true
 
     - name: Install Terraform.
-      dnf:
+      ansible.builtin.dnf:
         name: terraform
         state: present
 
 # AWS CLI v2 installation
 - name: Download AWS CLI installer (Debian family)
-  get_url:
+  ansible.builtin.get_url:
     url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
     dest: /tmp/awscliv2.zip
+    mode: '0644'
   when: ansible_os_family == "Debian"
 
 - name: Extract AWS CLI installer (Debian family)
-  unarchive:
+  ansible.builtin.unarchive:
     src: /tmp/awscliv2.zip
     dest: /tmp
-    remote_src: yes
+    remote_src: true
   when: ansible_os_family == "Debian"
 
 - name: Install AWS CLI v2 (Debian family)
-  command: /tmp/aws/install --update
-  become: yes
+  ansible.builtin.command: /tmp/aws/install --update
   args:
     creates: /usr/local/bin/aws
   when: ansible_os_family == "Debian"
 
 - name: Install AWS CLI v2 (RedHat family)
-  dnf:
+  ansible.builtin.dnf:
     name: awscli
     state: present
-  become: yes
   when: ansible_os_family == "RedHat"
 
 # Docker installation (Debian)
 - name: Docker installation.
   when: ansible_os_family == "Debian"
-  block:
+  ansible.builtin.block:
     - name: Create apt keyrings directory
-      file:
+      ansible.builtin.file:
         path: /etc/apt/keyrings
         state: directory
         mode: '0755'
 
     - name: Add Docker GPG key (Debian family)
-      apt_key:
+      ansible.builtin.apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present
 
     - name: Add Docker repository (Debian family)
-      apt_repository:
+      ansible.builtin.apt_repository:
         repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
         state: present
 
     - name: Install Docker (Debian family)
-      apt:
+      ansible.builtin.apt:
         name:
           - docker-ce
           - docker-ce-cli
@@ -119,23 +118,23 @@
           - docker-buildx-plugin
           - docker-compose-plugin
         state: present
-        update_cache: yes
+        update_cache: true
 
 # Docker installation (RedHat)
 - name: Docker installation.
   when: ansible_os_family == "RedHat"
-  block:
+  ansible.builtin.block:
     - name: Add Docker repository (RedHat family)
-      yum_repository:
+      ansible.builtin.yum_repository:
         name: docker-ce-stable
         description: Docker CE Stable - $basearch
         baseurl: https://download.docker.com/linux/centos/$releasever/$basearch/stable
         gpgkey: https://download.docker.com/linux/centos/gpg
-        gpgcheck: yes
-        enabled: yes
+        gpgcheck: true
+        enabled: true
 
     - name: Install Docker (RedHat family)
-      dnf:
+      ansible.builtin.dnf:
         name:
           - docker-ce
           - docker-ce-cli
