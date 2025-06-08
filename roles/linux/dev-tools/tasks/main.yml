@@ -25,8 +25,7 @@
     state: present
   when: ansible_os_family == "RedHat"
 
-# Terraform installation
-- name: Terraform task block (Debian).
+- name: Terraform task block.
   when: ansible_os_family == "Debian"
   ansible.builtin.block:
     - name: Add HashiCorp GPG key.
