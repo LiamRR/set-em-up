@@ -3,8 +3,8 @@
   gather_facts: true
   become: true
   roles:
-    - linux/base # noqa role-name[path]
-    - linux/dev-tools # noqa role-name[path]
+    - linux/base
+    - linux/dev-tools
   tags:
     - linux
 
