@@ -27,7 +27,7 @@
 
 - name: Terraform task block.
   when: ansible_os_family == "Debian"
-  ansible.builtin.block:
+  block:
     - name: Add HashiCorp GPG key.
       ansible.builtin.apt_key:
         url: https://apt.releases.hashicorp.com/gpg
@@ -46,7 +46,7 @@
 
 - name: Terraform task block (Redhat).
   when: ansible_os_family == "RedHat"
-  ansible.builtin.block:
+  block:
     - name: Add HashiCorp repository.
       ansible.builtin.yum_repository:
         name: hashicorp
@@ -91,7 +91,7 @@
 # Docker installation (Debian)
 - name: Docker installation.
   when: ansible_os_family == "Debian"
-  ansible.builtin.block:
+  block:
     - name: Create apt keyrings directory
       ansible.builtin.file:
         path: /etc/apt/keyrings
@@ -122,7 +122,7 @@
 # Docker installation (RedHat)
 - name: Docker installation.
   when: ansible_os_family == "RedHat"
-  ansible.builtin.block:
+  block:
     - name: Add Docker repository (RedHat family)
       ansible.builtin.yum_repository:
         name: docker-ce-stable
