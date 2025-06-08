@@ -14,10 +14,6 @@ apt_packages:
   - unzip
   - zip
 
-snap_packages:
-  - code
-  - firefox
-
 rhel_packages:
   - git
   - curl

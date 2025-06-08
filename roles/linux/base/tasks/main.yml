@@ -10,13 +10,6 @@
     state: present
   when: ansible_os_family == "Debian"
 
-- name: Install Snap packages
-  community.general.snap:
-    name: "{{ item }}"
-    state: present
-  loop: "{{ snap_packages }}"
-  when: ansible_os_family == "Debian"
-
 - name: Install DNF packages (Fedora/RHEL)
   ansible.builtin.dnf:
     name: "{{ item }}"
