@@ -18,29 +18,29 @@
   when: ansible_os_family == "RedHat"
 
 # Install Pyton
-- name: Add deadsnakes PPA for Python 3.12
-  ansible.builtin.apt_repository:
-    repo: ppa:deadsnakes/ppa
-    state: present
-    update_cache: true
-  when: ansible_os_family == "Debian"
+# - name: Add deadsnakes PPA for Python 3.12
+#   ansible.builtin.apt_repository:
+#     repo: ppa:deadsnakes/ppa
+#     state: present
+#     update_cache: true
+#   when: ansible_os_family == "Debian"
 
-- name: Install Python 3.12 and related packages
-  ansible.builtin.apt:
-    name:
-      - python3.12
-      - python3.12-dev
-      - python3.12-venv
-    state: present
-  when: ansible_os_family == "Debian"
+# - name: Install Python 3.12 and related packages
+#   ansible.builtin.apt:
+#     name:
+#       - python3.12
+#       - python3.12-dev
+#       - python3.12-venv
+#     state: present
+#   when: ansible_os_family == "Debian"
 
-- name: Install Python development tools
-  ansible.builtin.apt:
-    name:
-      - python3-pip
-      - python3-venv
-      - python3-full
-      - pipx
-    state: present
-    update_cache: true
-  when: ansible_os_family == "Debian"
+# - name: Install Python development tools
+#   ansible.builtin.apt:
+#     name:
+#       - python3-pip
+#       - python3-venv
+#       - python3-full
+#       - pipx
+#     state: present
+#     update_cache: true
+#   when: ansible_os_family == "Debian"
