@@ -28,21 +28,43 @@
 - name: Terraform task block.
   when: ansible_os_family == "Debian"
   block:
-    - name: Add HashiCorp GPG key.
-      ansible.builtin.apt_key:
-        url: https://apt.releases.hashicorp.com/gpg
-        state: present
-
-    - name: Add HashiCorp repository.
-      ansible.builtin.apt_repository:
-        repo: "deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
-        state: present
-
-    - name: Install Terraform.
+    - name: Ensure unzip is installed
       ansible.builtin.apt:
-        name: terraform
+        name: unzip
         state: present
-        update_cache: true
+
+    - name: Set Terraform version
+      ansible.builtin.set_fact:
+        terraform_version: "1.12.1" # Move to vars
+
+    - name: Download Terraform archive
+      ansible.builtin.get_url:
+        url: "https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip"
+        dest: "/tmp/terraform_{{ terraform_version }}_linux_amd64.zip"
+        mode: '0644'
+
+    - name: Extract Terraform binary
+      ansible.builtin.unarchive:
+        src: "/tmp/terraform_{{ terraform_version }}_linux_amd64.zip"
+        dest: /usr/local/bin/
+        remote_src: yes
+        mode: '0755'
+
+    - name: Ensure terraform is executable
+      ansible.builtin.file:
+        path: /usr/local/bin/terraform
+        mode: '0755'
+        owner: root
+        group: root
+
+    - name: Verify terraform install
+      ansible.builtin.command: terraform version
+      register: terraform_version_check
+      changed_when: false
+
+    - name: Print Terraform version
+      ansible.builtin.debug:
+        var: terraform_version_check.stdout
 
 - name: Terraform task block (Redhat).
   when: ansible_os_family == "RedHat"
